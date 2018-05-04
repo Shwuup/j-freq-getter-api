@@ -13,6 +13,7 @@ public class Test {
         inval.add("助詞");
         inval.add("助動詞");
         ArrayList<String> val = new ArrayList<String>();
+        
         for (Token token : tokens) {
         	boolean valid = inval.contains(token.getPartOfSpeechLevel1());
         	if (!valid) {
