@@ -5,14 +5,12 @@ import java.lang.Object;
 
 public class Test {
 	public static void main(String[] args) {
-		HashMap hm = new HashMap();
-		hm.put("タ", "ta");
-		hm.put("ベ", "be");
-		hm.put("ル", "ru");
-		
+		JapDic japdic = new JapDic();
+		System.out.println(japdic.getEng("タ"));
         Tokenizer tokenizer = new Tokenizer() ;
-        List<Token> tokens = tokenizer.tokenize("お寿司が食べたい。　桃太郎");
+        List<Token> tokens = tokenizer.tokenize("流派");
         ArrayList<String> inval = new ArrayList<String>();
+        
         inval.add("記号");
         inval.add("接頭詞");
         inval.add("助詞");
@@ -33,10 +31,13 @@ public class Test {
         System.out.println(basewords);
         List<Token> basetokens = tokenizer.tokenize(basewords);
         for (Token token : basetokens) {
-        	System.out.print(token.getReading());
+        	System.out.println(token.getReading());
         }
-        char kanji = '漢';
-        System.out.println((int)kanji);
+        String s = "リュウハ";
+        for (int i = 0; i < s.length(); i++){
+        	System.out.println(s.charAt(i));
+        }
+
 	}
 }
 
