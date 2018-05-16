@@ -31,11 +31,6 @@ public class Test {
 			e.printStackTrace();
 		}
         
-		
-		
-		
-//		JapDic japdic = new JapDic();
-//		System.out.println(japdic.getEng("タ"));
         Tokenizer tokenizer = new Tokenizer() ;
         List<Token> tokens = tokenizer.tokenize(text);
 
@@ -57,11 +52,7 @@ public class Test {
 
 		}
         System.out.println(basewords);
-        List<Token> basetokens = tokenizer.tokenize(basewords);
-        for (Token token : basetokens) {
-        	System.out.println(token.getReading());
-        }
-        
+
 
 	}
 }
