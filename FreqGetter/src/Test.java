@@ -10,6 +10,7 @@ import java.lang.Object;
 public class Test {
 	public static void main(String[] args) {
 		HashMap<String, Integer> dic = new HashMap<String, Integer>();
+		Pair p1 = new Pair("漢字", 4);
 		
 		String fileName = "C:\\Users\\Ethan\\Documents\\GitHub\\j-vocab-freq-getter\\FreqGetter\\src\\test.txt";
         String line = null;
@@ -45,15 +46,28 @@ public class Test {
         for (Token token : tokens) {
         	boolean invalid = inval.contains(token.getPartOfSpeechLevel1());
         	if (!invalid) {
-        		val.add(token.getBaseForm());
         		System.out.println(token.getBaseForm());
-        		dic.put(token.getBaseForm(), 0);
+        		if (dic.containsKey(token.getBaseForm())) {
+        			dic.put(token.getBaseForm(), dic.get(token.getBaseForm())+ 1);
+        		}
+        		else {
+        			dic.put(token.getBaseForm(), 1);
+        		}
+        		
         	}
 
 		}
-        System.out.println(basewords);
-
-
+        ArrayList<Pair> freqlist = new ArrayList<Pair>();
+        
+        Iterator<String> codeIterator = dic.keySet().iterator();
+        for (Map.Entry<String, Integer> pair : dic.entrySet()) {
+        	System.out.println(pair.getKey() + " : " + pair.getValue());
+        	freqlist.add(new Pair(pair.getKey(), pair.getValue()));
+        }
+        Collections.sort(freqlist);
+        for (Pair p : freqlist) {
+        	System.out.println(p);
+        }
 	}
 }
 
