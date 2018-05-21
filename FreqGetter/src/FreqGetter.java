@@ -13,11 +13,7 @@ import com.atilika.kuromoji.ipadic.Token;
 import com.atilika.kuromoji.ipadic.Tokenizer;
 
 public class FreqGetter {
-	public void run(){
-		HashMap<String, Integer> dic = new HashMap<String, Integer>();
-		Pair p1 = new Pair("漢字", 4);
-		
-		String fileName = "C:\\Users\\Ethan\\Documents\\GitHub\\j-vocab-freq-getter\\FreqGetter\\src\\test.txt";
+	public String readFile(String fileName) {
 	    String line = null;
 	    String text = "";
 	    
@@ -35,32 +31,49 @@ public class FreqGetter {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	    
+		return text;
+	}
+	
+	public boolean isInteger(String i) {
+		try {
+			Integer.parseInt(i);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	public void run(){
+		//Add kth sorting
+		
+		HashMap<String, Integer> dic = new HashMap<String, Integer>();
+		Pair p1 = new Pair("漢字", 4);
+		
+		String fileName = "C:\\Users\\Ethan\\Documents\\GitHub\\j-vocab-freq-getter\\FreqGetter\\src\\test.txt";
+		String text = readFile(fileName);
 	    Tokenizer tokenizer = new Tokenizer() ;
 	    List<Token> tokens = tokenizer.tokenize(text);
-	
-	
-		
+	   
 	    ArrayList<String> inval = new ArrayList<String>();
 	    inval.add("記号");
 	    inval.add("接頭詞");
 	    inval.add("助詞");
 	    inval.add("助動詞");
 	    inval.add("感動詞");
+	    inval.add("の");
+	    inval.add("ん");
 	    ArrayList<String> val = new ArrayList<String>();
 	    String basewords = "";
 	    for (Token token : tokens) {
-	    	boolean invalid = inval.contains(token.getPartOfSpeechLevel1());
+	    	boolean invalid = inval.contains(token.getPartOfSpeechLevel1()) || inval.contains(token.getBaseForm());
 	    	if (!invalid) {
-	    		if (!token.getBaseForm().equals("*")) {
-	        		System.out.println(token.getBaseForm());
+	    		if (!(token.getBaseForm().equals("*") || isInteger(token.getBaseForm()))) {
 	        		if (dic.containsKey(token.getBaseForm())) {
 	        			dic.put(token.getBaseForm(), dic.get(token.getBaseForm())+ 1);
 	        		}
 	        		else {
 	        			dic.put(token.getBaseForm(), 1);
 	        		}
-	        		System.out.println("Base: " + token.getBaseForm() + " grammar: " + token.getPartOfSpeechLevel1());
 	    		}
 	    		
 	    	}
@@ -70,11 +83,13 @@ public class FreqGetter {
 	    
 	    Iterator<String> codeIterator = dic.keySet().iterator();
 	    for (Map.Entry<String, Integer> pair : dic.entrySet()) {
-	    	System.out.println(pair.getKey() + " : " + pair.getValue());
 	    	freqlist.add(new Pair(pair.getKey(), pair.getValue()));
 	    }
 	    
 	    Collections.sort(freqlist);
+	    for (Pair p : freqlist) {
+	    	System.out.println(p);
+	    }
 	}
 
 }
