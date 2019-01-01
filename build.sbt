@@ -3,7 +3,10 @@ name := "j-vocab-freq-getter"
 version := "0.1"
 
 scalaVersion := "2.12.8"
+
 val http4sVersion = "0.20.0-M4"
+
+updateOptions := updateOptions.value.withCachedResolution(true)
 
 libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-dsl" % http4sVersion,
