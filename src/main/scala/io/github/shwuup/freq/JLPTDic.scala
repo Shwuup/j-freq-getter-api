@@ -1,8 +1,9 @@
 package io.github.shwuup.freq
+import scala.collection.mutable
 import scala.io.Source
 
 object JLPTDic {
-  def apply = {
+  def apply(): mutable.Map[String, String] = {
     val jlptDic = scala.collection.mutable.Map[String, String]()
     val csv = getClass.getResource("/jlptvocab.csv")
     val bufferedSource = Source.fromURL(csv)
