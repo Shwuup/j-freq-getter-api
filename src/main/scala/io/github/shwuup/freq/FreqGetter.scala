@@ -26,10 +26,5 @@ object FreqGetter {
       }
     }
     (totalWords, wordsInText.toList)
-
-//    tokens.forEach(token => println(token.getSurface + "\t"
-//      + token.getBaseForm + "\t"
-//      + token.getPartOfSpeechLevel1 + "\t"
-//      + token.getAllFeatures))
   }
 }
