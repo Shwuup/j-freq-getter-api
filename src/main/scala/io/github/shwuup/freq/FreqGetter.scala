@@ -8,8 +8,7 @@ object FreqGetter {
   def apply(japText: String, jlptDic: mutable.Map[String, String]) = {
     val tokenizer = new Tokenizer()
     val tokens = tokenizer.tokenize(japText).asScala
-    var totalWords = 0
-    var wordsInText = scala.collection.mutable.HashMap.empty[String, (String, Int)]
+    var wordsInText = scala.collection.mutable.HashMap.empty[String, JWord]
 
     for (tok <- tokens) {
       val word = tok.getBaseForm
@@ -17,14 +16,16 @@ object FreqGetter {
       level match {
         case Some(value) =>
           if (wordsInText.contains(word)) {
-            val newFreq = wordsInText.getOrElse(word, ("not found", 0))._2 + 1
-            wordsInText += (word -> (value, newFreq))
+            val oldJWord = wordsInText.getOrElse(word, throw new Exception("hey this shouldn't happen"))
+            val newJWord = oldJWord.copy(freq = oldJWord.freq + 1)
+            wordsInText += (word -> newJWord)
           }
-          else wordsInText += (word -> (value, 1))
-          totalWords+=1
+          else wordsInText += (word -> JWord(word,value, 1))
         case None => println(s"$word not found")
       }
     }
-    (totalWords, wordsInText.toList)
+    val wordsInTextList = wordsInText.toList.map(x => x._2).sorted
+    val totalWords = wordsInTextList.length
+    (totalWords, wordsInTextList)
   }
 }
