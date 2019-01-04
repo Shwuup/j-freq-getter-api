@@ -7,6 +7,7 @@ import scala.io.Source
 
 object FreqGetter {
   val jlptDic: mutable.Map[String, String] = {
+    println("Currently loading CSV")
     val jlptDic = scala.collection.mutable.Map[String, String]()
     val csv = getClass.getResource("/jlptvocab.csv")
     val bufferedSource = Source.fromURL(csv)

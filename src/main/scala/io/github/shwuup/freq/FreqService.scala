@@ -8,12 +8,14 @@ import org.http4s.HttpRoutes
 import org.http4s.implicits._
 
 object FreqService {
+  val freqGetter = FreqGetter
+
   def apply() = HttpRoutes.of[IO] {
       case GET -> Root / "hello" / name =>
         Ok(s"Hello, $name.")
       case req @ POST -> Root / "upload" =>
         val fileContents = EntityDecoder.decodeString(req).unsafeRunSync
-        FreqGetter(fileContents)
+        freqGetter(fileContents)
         Ok("file upload complete")
     }.orNotFound
 }
