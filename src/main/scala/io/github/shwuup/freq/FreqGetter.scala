@@ -37,7 +37,7 @@ object FreqGetter {
       }
     }
     val wordsInTextList = wordsInText.toList.map(x => x._2).sorted
-    val totalWords = wordsInTextList.length
+    val totalWords = wordsInTextList.foldLeft(0)((x, y) => x + y.freq)
     (totalWords, wordsInTextList)
   }
 }
