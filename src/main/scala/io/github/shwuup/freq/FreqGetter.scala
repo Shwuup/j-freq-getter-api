@@ -6,22 +6,19 @@ import scala.collection.mutable
 import scala.io.Source
 
 object FreqGetter {
-  val jlptDic: mutable.Map[String, String] = {
+  val jlptDic: Map[String, String] = {
     println("Currently loading CSV")
-    val jlptDic = scala.collection.mutable.Map[String, String]()
     val csv = getClass.getResource("/jlptvocab.csv")
     val bufferedSource = Source.fromURL(csv)
-    for (line <- bufferedSource.getLines) {
-      val k = line.split(",")
-      jlptDic += (k(1) -> k(0))
-    }
+    val jlptDic = bufferedSource.getLines()
+      .foldLeft(Map.empty[String, String])((acc, tupleString) => acc + (tupleString.split(",")(1) -> tupleString.split(",")(0)))
     jlptDic
   }
 
-  def apply(japText: String) = {
+  def apply(japText: String): (Int, List[JWord]) = {
     val tokenizer = new Tokenizer()
     val tokens = tokenizer.tokenize(japText).asScala
-    var wordsInText = scala.collection.mutable.HashMap.empty[String, JWord]
+    var wordsInText = scala.collection.immutable.HashMap.empty[String, JWord]
     for (tok <- tokens) {
       val word = tok.getBaseForm
       val level = jlptDic.get(word)
