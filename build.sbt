@@ -13,5 +13,8 @@ libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-server" % http4sVersion,
   "org.http4s" %% "http4s-blaze-client" % http4sVersion,
   "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-  "com.atilika.kuromoji" % "kuromoji-ipadic" % "0.9.0"
+  "com.atilika.kuromoji" % "kuromoji-ipadic" % "0.9.0",
+  "io.circe" % "circe-parser_2.12" % "0.11.0",
+  "io.circe" % "circe-generic_2.12" % "0.11.0",
+  "io.circe" % "circe-core_2.12" % "0.11.0"
 )
