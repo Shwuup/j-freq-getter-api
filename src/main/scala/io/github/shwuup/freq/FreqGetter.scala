@@ -12,13 +12,14 @@ object FreqGetter {
     val bufferedSource = Source.fromURL(csv)
     val jlptDic = bufferedSource.getLines()
       .foldLeft(Map.empty[String, String])((acc, tupleString) => acc + (tupleString.split(",")(1) -> tupleString.split(",")(0)))
+    println("finished loading csv")
     jlptDic
   }
 
-  def apply(japText: String): (Int, List[JWord]) = {
+  def apply(japText: String): JLPTFrequencies = {
     val tokenizer = new Tokenizer()
     val tokens = tokenizer.tokenize(japText).asScala
-    var wordsInText = scala.collection.immutable.HashMap.empty[String, JWord]
+    var wordsInText = Map.empty[String, JWord]
     for (tok <- tokens) {
       val word = tok.getBaseForm
       val level = jlptDic.get(word)
@@ -29,12 +30,19 @@ object FreqGetter {
             val newJWord = oldJWord.copy(freq = oldJWord.freq + 1)
             wordsInText += (word -> newJWord)
           }
-          else wordsInText += (word -> JWord(word,value, 1))
+          else if (tok.getPartOfSpeechLevel1 != "助詞" && tok.getPartOfSpeechLevel1 != "接続詞") {
+            wordsInText += (word -> JWord(word,value, 1))
+
+          }
         case None => println(s"$word not found")
       }
     }
-    val wordsInTextList = wordsInText.toList.map(x => x._2).sorted
-    val totalWords = wordsInTextList.foldLeft(0)((x, y) => x + y.freq)
-    (totalWords, wordsInTextList)
+    val getJLPTFrequencies: JLPTFrequencies = {
+      val jlptTotalFreqList = wordsInText.toList.map(x => x._2).sorted
+      val totalWords = jlptTotalFreqList.foldLeft(0)((x, y) => x + y.freq)
+      val listOfFreq = for (i <- 1 to 5) yield jlptTotalFreqList.foldRight(List[JWord]())((x, y) => if (x.jlptLevel == s"$i") x :: y else y).take(10)
+      JLPTFrequencies(totalWords, jlptTotalFreqList.take(10), listOfFreq(0), listOfFreq(1), listOfFreq(2), listOfFreq(3), listOfFreq(4))
+    }
+    getJLPTFrequencies()
   }
 }
