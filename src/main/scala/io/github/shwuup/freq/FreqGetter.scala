@@ -43,6 +43,6 @@ object FreqGetter {
       val listOfFreq = for (i <- 1 to 5) yield jlptTotalFreqList.foldRight(List[JWord]())((x, y) => if (x.jlptLevel == s"$i") x :: y else y).take(10)
       JLPTFrequencies(totalWords, jlptTotalFreqList.take(10), listOfFreq(0), listOfFreq(1), listOfFreq(2), listOfFreq(3), listOfFreq(4))
     }
-    getJLPTFrequencies()
+    getJLPTFrequencies
   }
 }
