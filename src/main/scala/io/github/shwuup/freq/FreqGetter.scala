@@ -22,6 +22,7 @@ object FreqGetter {
     var wordsInText = Map.empty[String, JWord]
     for (tok <- tokens) {
       val word = tok.getBaseForm
+      val k = tok.getPartOfSpeechLevel1
       val level = jlptDic.get(word)
       level match {
         case Some(value) =>
@@ -30,7 +31,7 @@ object FreqGetter {
             val newJWord = oldJWord.copy(freq = oldJWord.freq + 1)
             wordsInText += (word -> newJWord)
           }
-          else if (tok.getPartOfSpeechLevel1 != "助詞" && tok.getPartOfSpeechLevel1 != "接続詞") {
+          else if (!wordsInText.contains(word)) {
             wordsInText += (word -> JWord(word,value, 1))
 
           }
