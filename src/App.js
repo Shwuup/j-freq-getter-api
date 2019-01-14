@@ -1,26 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      api: "",
+      selectedFile: "",
+    }
+  }
+
+  fileChangedHandler = (event) => {
+    this.setState({selectedFile: event.target.files[0]})
+  }
+
+  uploadHandler = () => {
+    axios.post("http://0.0.0.0:8001/upload", this.state.selectedFile)
+      .then(function (response) {
+        this.setState({api: response})
+      })
+  }
+
   render() {
+    const apiCall = 
+    axios.get("http://0.0.0.0:8001/")
+      .then(function (response) {
+        console.log(response)
+      }
+    )
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <React.Fragment>
+        <input type="file" onChange={this.fileChangedHandler}/>
+        <button onClick={this.uploadHandler}>Upload</button>
+      </React.Fragment>
     );
   }
 }
