@@ -9,7 +9,6 @@ class App extends Component {
       api: {
         jlptTotal: []
       },
-      test: "",
       selectedFile: "",
     }
   }
@@ -29,7 +28,6 @@ class App extends Component {
   }
 
   render() {
-    let jlpt = this.state.api.jlptTotal
     axios.get("http://0.0.0.0:8001/")
       .then(function (response) {
         console.log(response)
@@ -37,6 +35,7 @@ class App extends Component {
     )
     return (
       <React.Fragment>
+        <h1>J-FREQ-LIST-GETTER</h1>
         <input type="file" onChange={this.fileChangedHandler}/>
         <button onClick={this.uploadHandler}>Upload</button>
         <WordLister freqList={this.state.api.jlptTotal}/>
@@ -48,12 +47,16 @@ class App extends Component {
 export default App;
 
 function WordLister(props) {
+  const freqListElement = props.freqList.map(w => 
+    <li>
+      Word: {w.word}<br></br>
+      JLPT: {w.jlptLevel}<br></br>
+      Frequency: {w.freq}
+    </li>
+  )
   return (
-    <div>
-      {props.freqList.map((w, index) => 
-      <h1>
-        {index + 1}. Word: {w.word} <br/> JLPT Level: {w.jlptLevel} <br/> Frequency: {w.freq}
-      </h1>)}
-    </div>
+    <ol>
+      {freqListElement}
+    </ol>
   );
 }
