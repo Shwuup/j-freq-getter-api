@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Dropdown, DropdownItem } from 'semantic-ui-react'
-import _ from 'lodash';
+import { Dropdown } from 'semantic-ui-react'
+import get from 'lodash/get';
+import './App.css'
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +14,6 @@ class App extends Component {
       selectedFile: "",
       isFetched: false,
       currentList: [],
-      currentListName: "",
     }
   }
 
@@ -22,8 +22,8 @@ class App extends Component {
   }
 
   dropdownHandler = (event, data) => {
-    const chosenVal = _.get(this.state.api, data.value)
-    this.setState({ currentList: chosenVal, currentListName: data.text}, () => 
+    const chosenVal = get(this.state.api, data.value)
+    this.setState({ currentList: chosenVal}, () => 
       console.log(
         event,data
       ))
@@ -42,12 +42,15 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>J-FREQ-LIST-GETTER</h1>
-        <input type="file" onChange={this.fileChangedHandler}/>
-        <button onClick={this.uploadHandler}>Upload</button>
-        {this.state.isFetched &&
-          <Dropdown 
-          placeholder='select level' 
+        <h1 class="App-header">J-FREQ-LIST-GETTER</h1>
+        <div class="File-upload">
+          <input type="file" onChange={this.fileChangedHandler}/>
+          <button onClick={this.uploadHandler}>Upload</button>
+        </div>
+        {this.state.isFetched && 
+          <Dropdown
+          className='dropdown'
+          placeholder='select level'
           fluid 
           selection 
           onChange={this.dropdownHandler}
@@ -65,9 +68,9 @@ class App extends Component {
               value: 'jlpt5List'},
               {text: 'OVERALL', 
               value: 'jlptTotal'}
-              ]}
-              />}
-        <WordLister freqList={this.state.currentList} name={this.state.currentListName}/>
+            ]}/>
+        }
+        <WordLister freqList={this.state.currentList}/>
       </React.Fragment>
     );
   }
@@ -83,8 +86,12 @@ function WordLister(props) {
     </li>
   )
   return (
-    <ol>
-      {freqListElement}
-    </ol>
+    <div style={{textAlign: 'center'}}>
+      <div style={{display: 'inline-block', textAlign: 'left'}}>
+          <ol>
+            {freqListElement}
+          </ol>
+      </div>
+    </div>
   );
 }
