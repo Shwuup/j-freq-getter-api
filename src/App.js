@@ -81,8 +81,8 @@ export default App;
 function WordLister(props) {
   const freqListElement = props.freqList.map(w => 
     <li>
-      Word: {w.word}<br></br>
-      Frequency: {w.freq}
+      Word: <a href={"https://jisho.org/search/" + w.word} target="_blank">{w.word}</a><br></br>
+      Frequency: {w.freq}<br></br>
     </li>
   )
   return (
