@@ -1,11 +1,12 @@
 package io.github.shwuup.freq
 import com.atilika.kuromoji.ipadic.Tokenizer
+import com.typesafe.scalalogging.LazyLogging
 
 import collection.JavaConverters._
 import scala.collection.mutable
 import scala.io.Source
 
-object FreqGetter {
+object FreqGetter extends LazyLogging {
   val jlptDic: Map[String, String] = {
     println("Currently loading CSV")
     val csv = getClass.getResource("/jlptvocab.csv")
@@ -35,7 +36,7 @@ object FreqGetter {
             wordsInText += (word -> JWord(word,value, 1))
 
           }
-        case None => println(s"$word not found")
+        case None =>
       }
     }
     val getJLPTFrequencies: JLPTFrequencies = {

@@ -15,8 +15,10 @@ object FreqService {
   val freqGetter = FreqGetter
 
   def apply() = HttpRoutes.of[IO] {
-      case req @ POST -> Root / "upload" =>
-        val fileContents = EntityDecoder.decodeString(req)
-        Ok(freqGetter(fileContents.unsafeRunSync).asJson)
-    }.orNotFound
+    case GET -> Root =>
+      Ok("Welcome to j-freq-getter")
+    case req @ POST -> Root / "upload" =>
+      val fileContents = EntityDecoder.decodeString(req)
+      Ok(freqGetter(fileContents.unsafeRunSync).asJson)
+  }.orNotFound
 }
