@@ -3,18 +3,17 @@
   margin-top: 15px;
   margin-bottom: 15px;
   max-width: 500px;
-  
+}
 
+.tab {
+  margin-top: 15px;
 }
 
 .App-header {
   text-align: center;
   font-size: 70px;
-
-
 }
 
 .File-upload {
   text-align: center;
-
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Dropdown } from 'semantic-ui-react'
+import { Dropdown, Tab } from 'semantic-ui-react'
 import get from 'lodash/get';
 import './App.css'
 
@@ -38,6 +38,7 @@ class App extends Component {
         ));
       });
   }
+  
 
   render() {
     return (
@@ -47,30 +48,33 @@ class App extends Component {
           <input type="file" onChange={this.fileChangedHandler}/>
           <button onClick={this.uploadHandler}>Upload</button>
         </div>
-        {this.state.isFetched && 
-          <Dropdown
-          className='dropdown'
-          placeholder='select level'
-          fluid 
-          selection 
-          onChange={this.dropdownHandler}
-          options={
-            [
-              {text: 'JLPT1', 
-              value: 'jlpt1List'},
-              {text: 'JLPT2', 
-              value: 'jlpt2List'},
-              {text: 'JLPT3', 
-              value: 'jlpt3List'},
-              {text: 'JLPT4', 
-              value: 'jlpt4List'},
-              {text: 'JLPT5', 
-              value: 'jlpt5List'},
-              {text: 'OVERALL', 
-              value: 'jlptTotal'}
-            ]}/>
-        }
-        <WordLister freqList={this.state.currentList}/>
+      
+        <Tab panes={[
+          { menuItem: 'OVERALL', render: () => 
+            <Tab.Pane>
+              <WordLister freqList={this.state.api.jlptTotal}/>
+            </Tab.Pane>},
+          { menuItem: 'JLPT1', render: () => 
+            <Tab.Pane>
+              <WordLister freqList={this.state.api.jlpt1List}/>
+            </Tab.Pane>},
+          { menuItem: 'JLPT2', render: () => 
+            <Tab.Pane>
+              <WordLister freqList={this.state.api.jlpt2List}/>
+            </Tab.Pane>},
+          { menuItem: 'JLPT3', render: () => 
+            <Tab.Pane>
+              <WordLister freqList={this.state.api.jlpt3List}/>
+            </Tab.Pane>},
+          { menuItem: 'JLPT4', render: () => 
+            <Tab.Pane>
+              <WordLister freqList={this.state.api.jlpt4List}/>
+            </Tab.Pane>},
+          { menuItem: 'JLPT5', render: () => 
+            <Tab.Pane>
+              <WordLister freqList={this.state.api.jlpt5List}/>
+            </Tab.Pane>}
+        ]} className='tab'/>
       </React.Fragment>
     );
   }
@@ -84,14 +88,10 @@ function WordLister(props) {
       Word: <a href={"https://jisho.org/search/" + w.word} target="_blank">{w.word}</a><br></br>
       Frequency: {w.freq}<br></br>
     </li>
-  )
+    )
   return (
-    <div style={{textAlign: 'center'}}>
-      <div style={{display: 'inline-block', textAlign: 'left'}}>
-          <ol>
-            {freqListElement}
-          </ol>
-      </div>
-    </div>
+    <ol>
+      {freqListElement}
+    </ol>
   );
 }
