@@ -96,6 +96,7 @@ class App extends Component {
               )
             }
           ]}
+          menu={{ fluid: true, vertical: true }}
           className="tab"
         />
       </React.Fragment>
