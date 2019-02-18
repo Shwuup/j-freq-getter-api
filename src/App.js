@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Dropdown, Tab } from "semantic-ui-react";
-import get from "lodash/get";
+import { Container, Tab } from "semantic-ui-react";
 import "./App.css";
 
 class App extends Component {
@@ -9,7 +8,12 @@ class App extends Component {
     super(props);
     this.state = {
       api: {
-        jlptTotal: []
+        jlptTotal: [],
+        jlpt1List: [],
+        jlpt2List: [],
+        jlpt3List: [],
+        jlpt4List: [],
+        jlpt5List: []
       },
       selectedFile: "",
       isFetched: false,
@@ -19,11 +23,6 @@ class App extends Component {
 
   fileChangedHandler = event => {
     this.setState({ selectedFile: event.target.files[0] });
-  };
-
-  dropdownHandler = (event, data) => {
-    const chosenVal = get(this.state.api, data.value);
-    this.setState({ currentList: chosenVal }, () => console.log(event, data));
   };
 
   uploadHandler = () => {
@@ -40,65 +39,67 @@ class App extends Component {
     return (
       <React.Fragment>
         <h1 class="App-header">J-FREQ-LIST-GETTER</h1>
-        <div class="File-upload">
-          <input type="file" onChange={this.fileChangedHandler} />
-          <button onClick={this.uploadHandler}>Upload</button>
-        </div>
+        <Container>
+          <div class="File-upload">
+            <input type="file" onChange={this.fileChangedHandler} />
+            <button onClick={this.uploadHandler}>Upload</button>
+          </div>
 
-        <Tab
-          panes={[
-            {
-              menuItem: "OVERALL",
-              render: () => (
-                <Tab.Pane>
-                  <WordLister freqList={this.state.api.jlptTotal} />
-                </Tab.Pane>
-              )
-            },
-            {
-              menuItem: "JLPT1",
-              render: () => (
-                <Tab.Pane>
-                  <WordLister freqList={this.state.api.jlpt1List} />
-                </Tab.Pane>
-              )
-            },
-            {
-              menuItem: "JLPT2",
-              render: () => (
-                <Tab.Pane>
-                  <WordLister freqList={this.state.api.jlpt2List} />
-                </Tab.Pane>
-              )
-            },
-            {
-              menuItem: "JLPT3",
-              render: () => (
-                <Tab.Pane>
-                  <WordLister freqList={this.state.api.jlpt3List} />
-                </Tab.Pane>
-              )
-            },
-            {
-              menuItem: "JLPT4",
-              render: () => (
-                <Tab.Pane>
-                  <WordLister freqList={this.state.api.jlpt4List} />
-                </Tab.Pane>
-              )
-            },
-            {
-              menuItem: "JLPT5",
-              render: () => (
-                <Tab.Pane>
-                  <WordLister freqList={this.state.api.jlpt5List} />
-                </Tab.Pane>
-              )
-            }
-          ]}
-          menu={{ fluid: true, vertical: true }}
-          className="tab"
-        />
+          <Tab
+            panes={[
+              {
+                menuItem: "OVERALL",
+                render: () => (
+                  <Tab.Pane>
+                    <WordLister freqList={this.state.api.jlptTotal} />
+                  </Tab.Pane>
+                )
+              },
+              {
+                menuItem: "JLPT1",
+                render: () => (
+                  <Tab.Pane>
+                    <WordLister freqList={this.state.api.jlpt1List} />
+                  </Tab.Pane>
+                )
+              },
+              {
+                menuItem: "JLPT2",
+                render: () => (
+                  <Tab.Pane>
+                    <WordLister freqList={this.state.api.jlpt2List} />
+                  </Tab.Pane>
+                )
+              },
+              {
+                menuItem: "JLPT3",
+                render: () => (
+                  <Tab.Pane>
+                    <WordLister freqList={this.state.api.jlpt3List} />
+                  </Tab.Pane>
+                )
+              },
+              {
+                menuItem: "JLPT4",
+                render: () => (
+                  <Tab.Pane>
+                    <WordLister freqList={this.state.api.jlpt4List} />
+                  </Tab.Pane>
+                )
+              },
+              {
+                menuItem: "JLPT5",
+                render: () => (
+                  <Tab.Pane>
+                    <WordLister freqList={this.state.api.jlpt5List} />
+                  </Tab.Pane>
+                )
+              }
+            ]}
+            menu={{ fluid: true, vertical: true }}
+            className="tab"
+          />
+        </Container>
       </React.Fragment>
     );
   }
