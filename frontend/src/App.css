@@ -1,0 +1,15 @@
+.tab {
+  max-width: 450px;
+  margin: auto;
+}
+
+.App-header {
+  text-align: center;
+  font-size: 70px;
+}
+
+.File-upload {
+  justify-content: center;
+  display: flex;
+  margin-bottom: 30px;
+}
