@@ -11,14 +11,14 @@ Then run from your terminal:
 ```
 java -jar /path/to/your/directory/j-vocab-freq-getter-assembly-{VERSION}.jar 
 ```
-##Examples
-###Request
+## Examples
+### Request
 ```$xslt
 curl -i -X POST localhost:8001/upload \
 -H "Content-Type: text/xml" \
 --data-binary "@testData.txt"
 ```
-###Response
+### Response
 ```$xslt
 {
     "totalFreq": 165,
