@@ -2,10 +2,10 @@ package io.github.shwuup.freq
 
 case class JLPTFrequencies(totalFreq: Int,
                            jlptTotal: List[JWord],
-                           jlpt1List: List[JWord],
-                           jlpt2List: List[JWord],
-                           jlpt3List: List[JWord],
-                           jlpt4List: List[JWord],
-                           jlpt5List: List[JWord]) {
+                           jlpt1: List[JWord],
+                           jlpt2: List[JWord],
+                           jlpt3: List[JWord],
+                           jlpt4: List[JWord],
+                           jlpt5: List[JWord]) {
 
 }

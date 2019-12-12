@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Container, Tab } from "semantic-ui-react";
 import "./App.css";
+import {
+  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+} from 'recharts';
 
 class App extends Component {
   constructor(props) {
@@ -9,17 +12,18 @@ class App extends Component {
     this.state = {
       api: {
         jlptTotal: [],
-        jlpt1List: [],
-        jlpt2List: [],
-        jlpt3List: [],
-        jlpt4List: [],
-        jlpt5List: []
+        jlpt1: [],
+        jlpt2: [],
+        jlpt3: [],
+        jlpt4: [],
+        jlpt5: []
       },
       selectedFile: "",
       isFetched: false,
-      currentList: []
     };
   }
+
+
 
   fileChangedHandler = event => {
     this.setState({ selectedFile: event.target.files[0] });
@@ -36,71 +40,58 @@ class App extends Component {
   };
 
   render() {
+    const names = ["JLPT1", "JLPT2", "JLPT3", "JLPT4", "JLPT5"];
+    const transformed = names.map(name => ({
+      menuItem: name,
+      render: () => (
+        <Tab.Pane>
+          <WordLister freqList={this.state.api[name.toLowerCase()]} />
+          <BarChart
+            width={700}
+            height={400}
+            data={this.state.api[name.toLowerCase()]}
+            margin={{
+              top: 5, right: 40, left: 10, bottom: 5,
+            }}
+          >
+
+            <XAxis dataKey="word" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="freq" fill="#8884d8" />
+          </BarChart>
+        </Tab.Pane>
+      )
+    }))
+
     return (
       <React.Fragment>
         <h1 class="App-header">J-FREQ-LIST-GETTER</h1>
         <Container>
+          {!this.state.isFetched &&
+            <h3 style={{ textAlign: "center" }}>Please enter a japanese text file to upload: </h3>
+
+          }
+
           <div class="File-upload">
             <input type="file" onChange={this.fileChangedHandler} />
             <button onClick={this.uploadHandler}>Upload</button>
           </div>
 
-          <Tab
-            panes={[
-              {
-                menuItem: "OVERALL",
-                render: () => (
-                  <Tab.Pane>
-                    <WordLister freqList={this.state.api.jlptTotal} />
-                  </Tab.Pane>
-                )
-              },
-              {
-                menuItem: "JLPT1",
-                render: () => (
-                  <Tab.Pane>
-                    <WordLister freqList={this.state.api.jlpt1List} />
-                  </Tab.Pane>
-                )
-              },
-              {
-                menuItem: "JLPT2",
-                render: () => (
-                  <Tab.Pane>
-                    <WordLister freqList={this.state.api.jlpt2List} />
-                  </Tab.Pane>
-                )
-              },
-              {
-                menuItem: "JLPT3",
-                render: () => (
-                  <Tab.Pane>
-                    <WordLister freqList={this.state.api.jlpt3List} />
-                  </Tab.Pane>
-                )
-              },
-              {
-                menuItem: "JLPT4",
-                render: () => (
-                  <Tab.Pane>
-                    <WordLister freqList={this.state.api.jlpt4List} />
-                  </Tab.Pane>
-                )
-              },
-              {
-                menuItem: "JLPT5",
-                render: () => (
-                  <Tab.Pane>
-                    <WordLister freqList={this.state.api.jlpt5List} />
-                  </Tab.Pane>
-                )
-              }
-            ]}
-            menu={{ fluid: true, vertical: true }}
-            className="tab"
-          />
+          {this.state.isFetched &&
+            <Tab
+              panes={transformed}
+              menu={{ fluid: true, vertical: true }}
+              className="tab"
+            />
+          }
+
+
+
         </Container>
+
       </React.Fragment>
+
     );
   }
 }
@@ -111,7 +102,7 @@ function WordLister(props) {
   const freqListElement = props.freqList.map(w => (
     <li>
       Word:{" "}
-      <a href={"https://jisho.org/search/" + w.word} target="_blank">
+      <a href={"https://jisho.org/search/" + w.word} target="_blank" rel="noopener noreferrer">
         {w.word}
       </a>
       <br />
@@ -121,3 +112,5 @@ function WordLister(props) {
   ));
   return <ol>{freqListElement}</ol>;
 }
+
+

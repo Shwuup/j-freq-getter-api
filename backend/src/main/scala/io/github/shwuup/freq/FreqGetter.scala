@@ -23,7 +23,6 @@ object FreqGetter extends LazyLogging {
     var wordsInText = Map.empty[String, JWord]
     for (tok <- tokens) {
       val word = tok.getBaseForm
-      val k = tok.getPartOfSpeechLevel1
       val level = jlptDic.get(word)
       level match {
         case Some(value) =>

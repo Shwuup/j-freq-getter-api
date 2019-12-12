@@ -1,11 +1,12 @@
+
 .tab {
-  max-width: 450px;
+  max-width: 1000px;
   margin: auto;
 }
 
 .App-header {
-  text-align: center;
   font-size: 70px;
+  text-align: center;
 }
 
 .File-upload {
