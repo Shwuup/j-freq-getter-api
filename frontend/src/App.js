@@ -1,10 +1,23 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Container, Tab } from "semantic-ui-react";
+import {
+  Container,
+  Tab,
+  Button,
+  Header,
+  Segment,
+  Icon,
+  Grid
+} from "semantic-ui-react";
 import "./App.css";
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-} from 'recharts';
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer
+} from "recharts";
 
 class App extends Component {
   constructor(props) {
@@ -19,14 +32,19 @@ class App extends Component {
         jlpt5: []
       },
       selectedFile: "",
-      isFetched: false,
+      isSelected: false,
+      fileName: "",
+      isFetched: false
     };
   }
-
-
+  fileInputRef = React.createRef();
 
   fileChangedHandler = event => {
-    this.setState({ selectedFile: event.target.files[0] });
+    this.setState({
+      selectedFile: event.target.files[0],
+      fileName: event.target.files[0].name,
+      isSelected: true
+    });
   };
 
   uploadHandler = () => {
@@ -46,63 +64,70 @@ class App extends Component {
       render: () => (
         <Tab.Pane>
           <WordLister freqList={this.state.api[name.toLowerCase()]} />
-          <BarChart
-            width={700}
-            height={400}
-            data={this.state.api[name.toLowerCase()]}
-            margin={{
-              top: 5, right: 40, left: 10, bottom: 5,
-            }}
-          >
-
-            <XAxis dataKey="word" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="freq" fill="#8884d8" />
-          </BarChart>
+          <ResponsiveContainer width={"99%"} height={300}>
+            <BarChart
+              data={this.state.api[name.toLowerCase()]}
+              margin={{
+                top: 5,
+                right: 40,
+                left: 10,
+                bottom: 5
+              }}
+            >
+              <XAxis dataKey="word" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="freq" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
         </Tab.Pane>
       )
-    }))
+    }));
 
     return (
-      <React.Fragment>
-        <h1 class="App-header">J-FREQ-LIST-GETTER</h1>
-        <Container>
-          {!this.state.isFetched &&
-            <h3 style={{ textAlign: "center" }}>Please enter a japanese text file to upload: </h3>
+      <Grid>
+        <Grid.Column>
+          <Container>
+            <h1 className="App-header">J-FREQ-LIST-GETTER</h1>
+            {!this.state.isFetched && (
+              <h3 style={{ textAlign: "center" }}>
+                To get started, please enter a japanese text file to upload{" "}
+              </h3>
+            )}
 
-          }
+            <FileUploader
+              inputRef={this.fileInputRef}
+              upload={this.uploadHandler}
+              onClick={this.fileChangedHandler}
+              isSelected={this.state.isSelected}
+              name={this.state.fileName}
+            ></FileUploader>
 
-          <div class="File-upload">
-            <input type="file" onChange={this.fileChangedHandler} />
-            <button onClick={this.uploadHandler}>Upload</button>
-          </div>
-
-          {this.state.isFetched &&
-            <Tab
-              panes={transformed}
-              menu={{ fluid: true, vertical: true }}
-              className="tab"
-            />
-          }
-
-
-
-        </Container>
-
-      </React.Fragment>
-
+            {this.state.isFetched && (
+              <Tab
+                panes={transformed}
+                menu={{ fluid: true, vertical: true }}
+                className="tab"
+              />
+            )}
+          </Container>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
 
 export default App;
 
-function WordLister(props) {
+const WordLister = props => {
   const freqListElement = props.freqList.map(w => (
-    <li>
+    <li key={w.word.toString()}>
       Word:{" "}
-      <a href={"https://jisho.org/search/" + w.word} target="_blank" rel="noopener noreferrer">
+      <a
+        href={"https://jisho.org/search/" + w.word}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {w.word}
       </a>
       <br />
@@ -111,6 +136,29 @@ function WordLister(props) {
     </li>
   ));
   return <ol>{freqListElement}</ol>;
-}
+};
 
+const FileUploader = props => {
+  let text;
+  if (props.isSelected) {
+    text = props.name;
+  } else {
+    text = "No file selected";
+  }
+  return (
+    <Segment placeholder>
+      <React.Fragment>
+        <Header icon>
+          <Icon name="file alternate outline" />
+          {text}
+        </Header>
+        <Button primary onClick={() => props.inputRef.current.click()}>
+          Add file
+        </Button>
+        <Button onClick={props.upload}>Upload</Button>
+      </React.Fragment>
 
+      <input ref={props.inputRef} type="file" hidden onChange={props.onClick} />
+    </Segment>
+  );
+};
