@@ -88,7 +88,7 @@ class App extends Component {
       <Grid>
         <Grid.Column>
           <Container>
-            <h1 className="App-header">J-FREQ-LIST-GETTER</h1>
+            <h1 className="App-header">J-VOCAB-FREQ-GETTER</h1>
             {!this.state.isFetched && (
               <h3 style={{ textAlign: "center" }}>
                 To get started, please enter a japanese text file to upload{" "}
