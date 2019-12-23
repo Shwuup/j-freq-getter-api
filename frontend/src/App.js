@@ -145,20 +145,35 @@ const FileUploader = props => {
   } else {
     text = "No file selected";
   }
+
   return (
-    <Segment placeholder>
+    <Segment className="grouping" placeholder>
       <React.Fragment>
         <Header icon>
           <Icon name="file alternate outline" />
           {text}
         </Header>
-        <Button primary onClick={() => props.inputRef.current.click()}>
+        <Button
+          className="add-button"
+          onClick={() => props.inputRef.current.click()}
+        >
           Add file
         </Button>
-        <Button onClick={props.upload}>Upload</Button>
+
+        {props.isSelected && (
+          <Button primary onClick={props.upload}>
+            Upload
+          </Button>
+        )}
       </React.Fragment>
 
-      <input ref={props.inputRef} type="file" hidden onChange={props.onClick} />
+      <input
+        ref={props.inputRef}
+        type="file"
+        hidden
+        accept=".txt"
+        onChange={props.onClick}
+      />
     </Segment>
   );
 };

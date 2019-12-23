@@ -3,6 +3,16 @@
   margin: auto;
 }
 
+.ui.segment.grouping {
+  max-width: 1000px;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.ui.button.add-button {
+  margin-bottom: 2px;
+}
+
 .App-header {
   font-size: 70px;
   text-align: center;
